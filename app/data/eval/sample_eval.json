@@ -1,0 +1,92 @@
+[
+  {
+    "question": "What is SQL Injection and how do parameterized queries prevent it?",
+    "ground_truth": "SQL Injection occurs when an application uses dynamic database queries with string concatenation and user-supplied input, allowing attackers to inject malicious SQL. Parameterized queries (prepared statements) prevent it by separating SQL code from data, ensuring user input is always treated as a literal value and never as executable SQL syntax.",
+    "expected_topic": "sql injection"
+  },
+  {
+    "question": "What are the four main defenses against SQL injection attacks?",
+    "ground_truth": "The four main defenses against SQL injection are: 1) Use of Prepared Statements (Parameterized Queries), 2) Use of Stored Procedures, 3) Allowlist Input Validation, and 4) Escaping All User-Supplied Input. Prepared statements are the primary and most effective defense.",
+    "expected_topic": "sql injection"
+  },
+  {
+    "question": "When is it acceptable to use stored procedures to prevent SQL injection?",
+    "ground_truth": "Stored procedures can prevent SQL injection when they are implemented safely, meaning they do not include unsafe dynamic SQL generation. If a stored procedure generates dynamic SQL internally, it must use parameterized queries. Otherwise, stored procedures that use only static SQL are safe against injection.",
+    "expected_topic": "sql injection"
+  },
+  {
+    "question": "What is Cross-Site Scripting (XSS) and what are its main types?",
+    "ground_truth": "XSS is a web vulnerability where attackers inject malicious scripts into web pages viewed by other users. The main types are: Reflected XSS (malicious script comes from the current HTTP request), Stored XSS (malicious script is stored on the server, e.g., in a database), and DOM-based XSS (the vulnerability is in client-side code rather than server-side code).",
+    "expected_topic": "xss"
+  },
+  {
+    "question": "What output encoding rule should be applied to prevent XSS in HTML body context?",
+    "ground_truth": "For HTML body context, HTML Entity Encoding should be applied, converting characters like & to &amp;, < to &lt;, > to &gt;, \" to &quot;, ' to &#x27;, and / to &#x2F;. This ensures that any user-controlled data rendered in HTML cannot be interpreted as HTML markup.",
+    "expected_topic": "xss"
+  },
+  {
+    "question": "What is CSRF and how do Synchronizer Token Patterns defend against it?",
+    "ground_truth": "Cross-Site Request Forgery (CSRF) tricks authenticated users into unknowingly submitting malicious requests. The Synchronizer Token Pattern defends against it by embedding a unique, secret, unpredictable token in each HTML form that is validated server-side on submission. Since the attacker cannot know this token, their forged cross-origin requests will be rejected.",
+    "expected_topic": "csrf"
+  },
+  {
+    "question": "What is the SameSite cookie attribute and how does it protect against CSRF?",
+    "ground_truth": "The SameSite cookie attribute controls whether cookies are sent with cross-site requests. When set to 'Strict', cookies are never sent in cross-site requests, providing strong CSRF protection. When set to 'Lax', cookies are sent with top-level navigation GET requests but not with cross-origin POST requests, balancing security and usability. It is a strong defense-in-depth measure against CSRF.",
+    "expected_topic": "csrf"
+  },
+  {
+    "question": "What is the recommended password hashing algorithm and why?",
+    "ground_truth": "Argon2id is the recommended password hashing algorithm as it won the Password Hashing Competition. It is designed to be memory-hard, making it resistant to GPU and ASIC-based brute force attacks. When Argon2id is not available, bcrypt, scrypt, or PBKDF2 are acceptable alternatives. Plain hashing algorithms like MD5 or SHA-1 must never be used for passwords.",
+    "expected_topic": "password storage"
+  },
+  {
+    "question": "What is a pepper in password storage and how does it differ from a salt?",
+    "ground_truth": "A pepper is a secret value appended to a password before hashing, stored separately from the database (e.g., in application config or a hardware security module). Unlike a salt which is unique per password and stored alongside the hash, a pepper is application-wide and secret. It adds an extra layer of protection so that even if the database with password hashes is compromised, an attacker cannot crack the passwords without also obtaining the pepper.",
+    "expected_topic": "password storage"
+  },
+  {
+    "question": "What multi-factor authentication factors are defined in authentication best practices?",
+    "ground_truth": "Authentication best practices define three factor types: Something You Know (e.g., password, PIN), Something You Have (e.g., TOTP authenticator app, hardware security key, SMS OTP), and Something You Are (e.g., biometrics like fingerprint or facial recognition). MFA requires at least two different factor types, significantly increasing account security.",
+    "expected_topic": "authentication"
+  },
+  {
+    "question": "What should happen to a session after a successful login to prevent session fixation?",
+    "ground_truth": "After a successful login, a new session ID must be generated and the old pre-authentication session ID must be invalidated. This prevents session fixation attacks where an attacker sets a known session ID for a victim before they log in, then hijacks their authenticated session. The new session ID should be unpredictable and cryptographically random.",
+    "expected_topic": "authentication"
+  },
+  {
+    "question": "What cryptographic algorithms are recommended for symmetric and asymmetric encryption?",
+    "ground_truth": "For symmetric encryption, AES with a minimum key size of 128 bits (preferably 256 bits) is recommended, using authenticated modes like AES-GCM. For asymmetric encryption, RSA with at least 2048-bit keys or Elliptic Curve Cryptography (ECC) with at least 256-bit keys (e.g., ECDH or ECDSA on curves like P-256) are recommended. Weak algorithms like DES, 3DES, and RC4 must be avoided.",
+    "expected_topic": "cryptography"
+  },
+  {
+    "question": "Why should ECB mode never be used with AES encryption?",
+    "ground_truth": "ECB (Electronic Codebook) mode should never be used because it encrypts identical plaintext blocks to identical ciphertext blocks, revealing patterns in the data. This means an attacker can infer information about the plaintext even without decrypting it. For example, the classic 'ECB penguin' demonstrates how an image encrypted with AES-ECB still visibly reveals the outline of the original image.",
+    "expected_topic": "cryptography"
+  },
+  {
+    "question": "What are the key security configurations for running Docker containers securely?",
+    "ground_truth": "Key Docker security configurations include: running containers as non-root users, using read-only file systems (--read-only), dropping all unnecessary Linux capabilities (--cap-drop=all), disabling privilege escalation (--security-opt=no-new-privileges), using resource limits (--memory, --cpus) to prevent DoS, scanning images for vulnerabilities, avoiding privileged containers, and using user namespace remapping to isolate container UIDs from host UIDs.",
+    "expected_topic": "docker security"
+  },
+  {
+    "question": "What dangerous file types should be blocked in file upload functionality?",
+    "ground_truth": "Dangerous file types to block include server-side scripts such as PHP, ASP, ASPX, JSP, CGI files, as well as archive files that may be decompressed to web-accessible directories (zip bombs), and HTML/SVG files that can execute JavaScript. The recommended approach is to use an allowlist of safe file extensions, validate MIME types and file content (magic bytes), rather than relying solely on client-supplied extension or MIME type.",
+    "expected_topic": "file upload"
+  },
+  {
+    "question": "What is insecure deserialization and how can it lead to remote code execution?",
+    "ground_truth": "Insecure deserialization occurs when an application deserializes data from an untrusted source without validating it first. Attackers can craft malicious serialized objects containing executable code or gadget chains that, when deserialized, trigger unintended actions including remote code execution (RCE), privilege escalation, or data manipulation. This is especially dangerous in languages like Java, PHP, and Python where serialized objects can contain complex object graphs.",
+    "expected_topic": "deserialization"
+  },
+  {
+    "question": "What is a Denial of Service attack and what resource types are commonly targeted?",
+    "ground_truth": "A Denial of Service (DoS) attack aims to make a system or service unavailable to legitimate users by overwhelming its resources. Commonly targeted resources include: Network bandwidth (flooding with traffic), CPU (computationally expensive operations), Memory (exhausting available RAM), Disk I/O (writing large files), Application threads/connections (connection pool exhaustion), and External service limits (API rate limits, third-party quotas).",
+    "expected_topic": "denial of service"
+  },
+  {
+    "question": "How does rate limiting help prevent denial of service attacks?",
+    "ground_truth": "Rate limiting restricts the number of requests a client can make within a given time window, preventing any single attacker or malfunctioning client from exhausting server resources. It should be applied at multiple layers: network-level (firewall, WAF), application-level (per IP, per user account, per API endpoint). Rate limiting complements other controls like CAPTCHAs, connection timeouts, and resource quotas to maintain service availability.",
+    "expected_topic": "denial of service"
+  }
+]
