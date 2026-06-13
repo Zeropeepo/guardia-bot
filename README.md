@@ -104,9 +104,18 @@ You can upload documents (like PDFs, TXT, or Markdown) directly through the Fast
 
 ## 📊 RAG Evaluation
 
-Guardia Bot includes a built-in evaluation framework using the `ragas` library.
+Guardia Bot includes a standalone evaluation script using the `ragas` library to comprehensively test the retrieval and generation quality of the pipeline.
 
-To test the quality of your RAG pipeline:
-1. Ensure your knowledge base has been populated with relevant documents.
-2. Send a POST request to `/api/eval` with an array of questions and their expected "ground truth" answers.
-3. The system will evaluate the retrieval precision, context recall, answer relevancy, and faithfulness, returning detailed metrics for continuous improvement.
+To run the evaluation:
+1. Add your test questions and expected ground truths to `app/data/eval/sample_eval.json`.
+2. Ensure your Qdrant vector database is running (e.g., via `docker compose up -d`).
+3. Run the evaluation script using `uv`:
+   ```bash
+   uv run python evaluate.py
+   ```
+
+The script will:
+- Re-ingest the default cybersecurity markdown files from `app/data/raw/`.
+- Query the pipeline using the test questions defined in `sample_eval.json`.
+- Evaluate the responses using **Groq's `llama-3.1-8b-instant`** as the LLM Judge to compute Faithfulness, Answer Relevancy, Context Precision, and Context Recall.
+- Output a summary to the console and save detailed reports (JSON & CSV) in `app/data/eval/results/`.
